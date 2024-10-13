@@ -14,11 +14,12 @@ from plugins.users_api import get_user, update_user_info
 from plugins.database import get_file_details
 from pyrogram.errors import ChatAdminRequired, FloodWait
 from pyrogram.types import *
-from utils import verify_user, check_token, check_verification, get_token
+from utils import verify_user, check_token, check_verification, get_token, get_seconds
 from config import *
 import re
 import json
 import base64
+import datetime
 from urllib.parse import quote_plus
 from TechVJ.utils.file_properties import get_name, get_hash, get_media_file_size
 logger = logging.getLogger(__name__)
@@ -76,6 +77,10 @@ async def start(client, message):
 # Don't Remove Credit Tg - @VJ_Botz
 # Subscribe YouTube Channel For Amazing Bot https://t.me/indian_sluts_leaks
 # Ask Doubt on telegram @KingVJ01
+
+    if not await db.has_premium_access(message.from_user.id):
+        await message.reply_text("Plan Text")
+        return 
     
     data = message.command[1]
     try:
@@ -532,3 +537,68 @@ async def cb_handler(client: Client, query: CallbackQuery):
 # Don't Remove Credit Tg - @VJ_Botz
 # Subscribe YouTube Channel For Amazing Bot https://t.me/indian_sluts_leaks
 # Ask Doubt on telegram @KingVJ01
+
+@Client.on_message(filters.command("add_premium"))
+async def give_premium_cmd_handler(client, message):
+    user_id = message.from_user.id
+    if user_id not in ADMINS:
+        await message.delete()
+        return
+    if len(message.command) == 3:
+        user_id = int(message.command[1])  # Convert the user_id to integer
+        time = message.command[2]        
+        seconds = await get_seconds(time)
+        if seconds > 0:
+            expiry_time = datetime.datetime.now() + datetime.timedelta(seconds=seconds)
+            user_data = {"id": user_id, "expiry_time": expiry_time} 
+            await db.update_user(user_data)  # Use the update_user method to update or insert user data
+            await message.reply_text("Premium access added to the user.")            
+            await client.send_message(
+                chat_id=user_id,
+                text=f"<b>ᴘʀᴇᴍɪᴜᴍ ᴀᴅᴅᴇᴅ ᴛᴏ ʏᴏᴜʀ ᴀᴄᴄᴏᴜɴᴛ ꜰᴏʀ {time} ᴇɴᴊᴏʏ 😀\n</b>",                
+            )
+        else:
+            await message.reply_text("Invalid time format. Please use '1day for days', '1hour for hours', or '1min for minutes', or '1month for months' or '1year for year'")
+    else:
+        await message.reply_text("<b>Usage: /add_premium user_id time \n\nExample /add_premium 1252789 10day \n\n(e.g. for time units '1day for days', '1hour for hours', or '1min for minutes', or '1month for months' or '1year for year')</b>")
+        
+@Client.on_message(filters.command("remove_premium"))
+async def remove_premium_cmd_handler(client, message):
+    user_id = message.from_user.id
+    if user_id not in ADMINS:
+        await message.delete()
+        return
+    if len(message.command) == 2:
+        user_id = int(message.command[1])  # Convert the user_id to integer
+        time = "1s"
+        seconds = await get_seconds(time)
+        if seconds > 0:
+            expiry_time = datetime.datetime.now() + datetime.timedelta(seconds=seconds)
+            user_data = {"id": user_id, "expiry_time": expiry_time}  # Using "id" instead of "user_id"
+            await db.update_user(user_data)  # Use the update_user method to update or insert user data
+            await message.reply_text("Premium access removed to the user.")
+            await client.send_message(
+                chat_id=user_id,
+                text=f"<b>premium removed by admins \n\n Contact Admin if this is mistake \n\n 👮 Admin : {OWNER_USERNAME} \n</b>",
+                disable_web_page_preview=True
+            )
+        else:
+            await message.reply_text("Invalid time format.'")
+    else:
+        await message.reply_text("Usage: /remove_premium user_id")
+        
+@Client.on_message(filters.command("plan"))
+async def plans_list(client, message):
+    await message.reply_text("Plan Text")
+        
+@Client.on_message(filters.command("myplan"))
+async def check_plans_cmd(client, message):
+    user_id  = message.from_user.id
+    if await db.has_premium_access(user_id):         
+        remaining_time = await db.check_remaining_uasge(user_id)             
+        expiry_time = remaining_time + datetime.datetime.now()
+        await message.reply_text(f"**Your plans details are :\n\nRemaining Time : {remaining_time}\n\nExpirytime : {expiry_time}**")
+    else:
+        await message.reply_text("**😢 You Don't Have Any Premium Subscription.\n\n Check Out Our Premium /plan**")
+        
+    
