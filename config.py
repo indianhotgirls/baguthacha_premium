@@ -22,7 +22,7 @@ API_ID = int(environ.get("API_ID", "19067052"))
 API_HASH = environ.get("API_HASH", "f2205657fd3b0b40e9a0b11aac366656")
 BOT_TOKEN = environ.get("BOT_TOKEN", "8171337334:AAHFYZ3UoPv1RQ47mNSkd4Y_LgcuObw0agM")
 
-PICS = (environ.get('PICS', 'https://graph.org/file/ce1723991756e48c35aa1.jpg')).split() # Bot Start Picture
+PICS = (environ.get('PICS', 'https://desileaks.in/wp-content/uploads/2024/08/5d0ac3e9-73d0-485f-901a-871bf6ea09cb.jpg')).split() # Bot Start Picture
 ADMINS = [int(admin) if id_pattern.search(admin) else admin for admin in environ.get('ADMINS', '1871899094 6866849202').split()]
 BOT_USERNAME = environ.get("BOT_USERNAME", "baguthacha_premium_bot") # without @
 PORT = environ.get("PORT", "8080")
