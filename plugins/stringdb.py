@@ -1,10 +1,10 @@
 import pymongo
 import random
 import string
-from config import T_DB_URI
+from config import DB_URI
 
 # Connect to MongoDB
-client = pymongo.MongoClient(T_DB_URI)
+client = pymongo.MongoClient(DB_URI)
 db = client["string_mapping_db"]
 collection = db["string_mapping"]
 
