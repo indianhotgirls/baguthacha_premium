@@ -12,6 +12,7 @@ from plugins.dbusers import db
 from pyrogram import Client, filters, enums
 from plugins.users_api import get_user, update_user_info
 from plugins.database import get_file_details
+from plugins.stringdb import get_original_string
 from pyrogram.errors import ChatAdminRequired, FloodWait
 from pyrogram.types import *
 from utils import verify_user, check_token, check_verification, get_token, get_seconds
@@ -84,9 +85,10 @@ async def start(client, message):
     
     data = message.command[1]
     try:
-        pre, file_id = data.split('_', 1)
+        pre, text = data.split('_', 1)
+        file_id = get_original_string(text)
     except:
-        file_id = data
+        file_id = get_original_string(data)
         pre = ""
     if data.split("-", 1)[0] == "verify":
         userid = data.split("-", 2)[1]
@@ -125,7 +127,8 @@ async def start(client, message):
         except Exception as e:
             return await message.reply_text(f"**Error - {e}**")
         sts = await message.reply("**🔺 ᴘʟᴇᴀsᴇ ᴡᴀɪᴛ**")
-        file_id = data.split("-", 1)[1]
+        file_text = data.split("-", 1)[1]
+        file_id = get_original_string(file_text)
         msgs = BATCH_FILES.get(file_id)
         if not msgs:
             file = await client.download_media(file_id)
