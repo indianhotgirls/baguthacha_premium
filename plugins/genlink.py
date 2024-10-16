@@ -7,6 +7,7 @@ from pyrogram import filters, Client, enums
 from pyrogram.errors.exceptions.bad_request_400 import ChannelInvalid, UsernameInvalid, UsernameNotModified
 from config import ADMINS, LOG_CHANNEL, PUBLIC_FILE_STORE, WEBSITE_URL, WEBSITE_URL_MODE
 from plugins.database import unpack_new_file_id
+from plugins.stringdb import generate_random_string, save_mapping
 from plugins.users_api import get_user, get_short_link
 import re
 import os
@@ -40,12 +41,14 @@ async def incoming_gen_link(bot, message):
     string = 'file_'
     string += file_id
     outstr = base64.urlsafe_b64encode(string.encode("ascii")).decode().strip("=")
+    random_string = generate_random_string()
+    save_mapping(random_string, outstr)
     user_id = message.from_user.id
     user = await get_user(user_id)
     if WEBSITE_URL_MODE == True:
-        share_link = f"{WEBSITE_URL}?Tech_VJ={outstr}"
+        share_link = f"{WEBSITE_URL}?Tech_VJ={random_string}"
     else:
-        share_link = f"https://t.me/{username}?start={outstr}"
+        share_link = f"https://t.me/{username}?start={random_string}"
     if user["base_site"] and user["shortener_api"] != None:
         short_link = await get_short_link(user, share_link)
         await message.reply(f"<b>⭕ ʜᴇʀᴇ ɪs ʏᴏᴜʀ ʟɪɴᴋ:\n\n🖇️ sʜᴏʀᴛ ʟɪɴᴋ :- {short_link}</b>")
@@ -73,12 +76,14 @@ async def gen_link_s(bot, message):
     string = 'filep_' if message.text.lower().strip() == "/plink" else 'file_'
     string += file_id
     outstr = base64.urlsafe_b64encode(string.encode("ascii")).decode().strip("=")
+    random_string = generate_random_string()
+    save_mapping(random_string, outstr)
     user_id = message.from_user.id
     user = await get_user(user_id)
     if WEBSITE_URL_MODE == True:
-        share_link = f"{WEBSITE_URL}?Tech_VJ={outstr}"
+        share_link = f"{WEBSITE_URL}?Tech_VJ={random_string}"
     else:
-        share_link = f"https://t.me/{username}?start={outstr}"
+        share_link = f"https://t.me/{username}?start={random_string}"
     if user["base_site"] and user["shortener_api"] != None:
         short_link = await get_short_link(user, share_link)
         await message.reply(f"<b>⭕ ʜᴇʀᴇ ɪs ʏᴏᴜʀ ʟɪɴᴋ:\n\n🖇️ sʜᴏʀᴛ ʟɪɴᴋ :- {short_link}</b>")
@@ -188,12 +193,14 @@ async def gen_link_batch(bot, message):
     post = await bot.send_document(LOG_CHANNEL, f"batchmode_{message.from_user.id}.json", file_name="Batch.json", caption="⚠️Generated for filestore.")
     os.remove(f"batchmode_{message.from_user.id}.json")
     file_id, ref = unpack_new_file_id(post.document.file_id)
+    random_string = generate_random_string()
+    save_mapping(random_string, file_id)
     user_id = message.from_user.id
     user = await get_user(user_id)
     if WEBSITE_URL_MODE == True:
-        share_link = f"{WEBSITE_URL}?Tech_VJ=BATCH-{file_id}"
+        share_link = f"{WEBSITE_URL}?Tech_VJ=BATCH-{random_string}"
     else:
-        share_link = f"https://t.me/{username}?start=BATCH-{file_id}"
+        share_link = f"https://t.me/{username}?start=BATCH-{random_string}"
     if user["base_site"] and user["shortener_api"] != None:
         short_link = await get_short_link(user, share_link)
         await sts.edit(f"<b>⭕ ʜᴇʀᴇ ɪs ʏᴏᴜʀ ʟɪɴᴋ:\n\nContains `{og_msg}` files.\n\n🖇️ sʜᴏʀᴛ ʟɪɴᴋ :- {short_link}</b>")
