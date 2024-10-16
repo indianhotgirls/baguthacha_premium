@@ -9,7 +9,7 @@ db = client["string_mapping_db"]
 collection = db["string_mapping"]
 
 def generate_random_string():
-    return ''.join(random.choices(string.ascii_letters + string.digits, k=random.randint(10, 15)))
+    return ''.join(random.choices(string.ascii_letters + string.digits, k=random.randint(5, 10)))
 
 def save_mapping(random_string, original_string):
     mapping = {"random_string": random_string, "original_string": original_string}
