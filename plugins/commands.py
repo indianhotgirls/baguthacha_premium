@@ -80,7 +80,7 @@ async def start(client, message):
 # Ask Doubt on telegram @KingVJ01
 
     if not await db.has_premium_access(message.from_user.id):
-        await message.reply_text("Plan Text")
+        await message.reply_text("You are not premium member. Kindly contact us @DesileaksContactusBot to buy the membership plan")
         return 
     
     data = message.command[1]
