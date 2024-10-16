@@ -227,7 +227,8 @@ async def start(client, message):
 
     files_ = await get_file_details(file_id)           
     if not files_:
-        pre, file_id = ((base64.urlsafe_b64decode(data + "=" * (-len(data) % 4))).decode("ascii")).split("_", 1)
+        text = get_original_string(data)
+        pre, file_id = ((base64.urlsafe_b64decode(text + "=" * (-len(text) % 4))).decode("ascii")).split("_", 1)
         if not await check_verification(client, message.from_user.id) and VERIFY_MODE == True:
             btn = [[
                 InlineKeyboardButton("Verify", url=await get_token(client, message.from_user.id, f"https://telegram.me/{username}?start="))
