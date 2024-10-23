@@ -80,7 +80,7 @@ async def start(client, message):
 # Ask Doubt on telegram @KingVJ01
 
     if not await db.has_premium_access(message.from_user.id):
-        await message.reply_text("You are not premium member. \nMembership 5$ per month. Contact us @DesileaksContactusBot to buy the membership and payment verification.")
+        await message.reply_text("**😢 You Don't Have Any Premium Subscription.\n\n Check Out Our Premium /plan**")
         return 
     
     data = message.command[1]
@@ -593,7 +593,7 @@ async def remove_premium_cmd_handler(client, message):
         
 @Client.on_message(filters.command("plan"))
 async def plans_list(client, message):
-    await message.reply_text("Plan Text")
+    await message.reply_text("**👉 Monthly Membership 5$.\n\n Contact us @DesileaksContactusBot to buy the membership and payment verification.\n\n After payment verfication you are added to premium member. No refund.**")
         
 @Client.on_message(filters.command("myplan"))
 async def check_plans_cmd(client, message):
