@@ -593,7 +593,7 @@ async def remove_premium_cmd_handler(client, message):
         
 @Client.on_message(filters.command("plan"))
 async def plans_list(client, message):
-    await message.reply_text("**👉 Monthly Membership 5$.\n\n Contact us @desileaksvipbot to buy the membership.\n\n After payment verfication you are added to premium member. No refund.**")
+    await message.reply_text("**👉 Monthly Membership 5$ - 420₹.\n\n @Contact us @desileaksvip to buy the membership.\n\n After payment verfication you are added to premium member. No refund.**")
         
 @Client.on_message(filters.command("myplan"))
 async def check_plans_cmd(client, message):
