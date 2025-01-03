@@ -53,7 +53,7 @@ If You Want To Remove Api Then Copy This And Send To Bot - `/api None`"""
 
 👥 sᴜᴘᴘᴏʀᴛ ɢʀᴏᴜᴘ: <a href=https://t.me/+olSq4MdYUPY2MDlh>Desi Leaks Group</a>
 
-📢 ᴜᴘᴅᴀᴛᴇ ᴄʜᴀɴɴᴇʟ: <a href=https://t.me/desi_leaks_officials>Indian Sluts Leaks</a></b>
+📢 ᴜᴘᴅᴀᴛᴇ ᴄʜᴀɴɴᴇʟ: <a href=https://t.me/desi_leaks_officials>Desi Leaks Officials</a></b>
 """
 
     CABOUT_TXT = """<b>ʜɪ ɪ ᴀᴍ ᴘᴇʀᴍᴀɴᴇɴᴛ ғɪʟᴇ sᴛᴏʀᴇ ʙᴏᴛ.
