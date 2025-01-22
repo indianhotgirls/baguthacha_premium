@@ -550,6 +550,7 @@ async def give_premium_cmd_handler(client, message):
         return
     if len(message.command) == 3:
         user_id = int(message.command[1])  # Convert the user_id to integer
+        user = await client.get_users(user_id)
         time = message.command[2]        
         seconds = await get_seconds(time)
         if seconds > 0:
@@ -574,6 +575,7 @@ async def remove_premium_cmd_handler(client, message):
         return
     if len(message.command) == 2:
         user_id = int(message.command[1])  # Convert the user_id to integer
+        user = await client.get_users(user_id)
         time = "1s"
         seconds = await get_seconds(time)
         if seconds > 0:
@@ -616,7 +618,6 @@ async def premium_users_info(client, message):
     await message.reply(f"👥 ᴛᴏᴛᴀʟ ᴘʀᴇᴍɪᴜᴍ ᴜꜱᴇʀꜱ - {count}\n\n<i>ᴘʟᴇᴀꜱᴇ ᴡᴀɪᴛ, ꜰᴇᴛᴄʜɪɴɢ ꜰᴜʟʟ ɪɴꜰᴏ ᴏꜰ ᴘʀᴇᴍɪᴜᴍ ᴜꜱᴇʀꜱ</i>")
 
     users = await db.get_all_users()
-    user = await client.get_users(user_id)
     new = "📝 <u>ᴘʀᴇᴍɪᴜᴍ ᴜꜱᴇʀꜱ ɪɴꜰᴏʀᴍᴀᴛɪᴏɴ</u> :\n\n"
     user_count = 1
     async for user in users:
