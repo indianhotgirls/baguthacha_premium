@@ -93,5 +93,10 @@ class Database:
         })
         return count
 
+    async def remove_premium_access(self, user_id):
+        return await self.update_one(
+            {"id": user_id}, {"$set": {"expiry_time": None}}
+        )
+
 
 db = Database(DATABASE_URI, DATABASE_NAME)
