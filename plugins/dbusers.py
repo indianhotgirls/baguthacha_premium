@@ -98,5 +98,14 @@ class Database:
             {"id": user_id}, {"$set": {"expiry_time": None}}
         )
 
+    async def update_one(self, filter_query, update_data):
+        try:
+            # Assuming self.client and self.users are set up properly
+            result = await self.users.update_one(filter_query, update_data)
+            return result.matched_count == 1
+        except Exception as e:
+            print(f"Error updating document: {e}")
+            return False
+
 
 db = Database(DATABASE_URI, DATABASE_NAME)
