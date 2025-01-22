@@ -604,5 +604,50 @@ async def check_plans_cmd(client, message):
         await message.reply_text(f"**Your plans details are :\n\nRemaining Time : {remaining_time}\n\nExpirytime : {expiry_time}**")
     else:
         await message.reply_text("**😢 You Don't Have Any Premium Subscription.\n\n Check Out Our Premium /plan**")
+
+@Client.on_message(filters.command("premium_users"))
+async def premium_users_info(client, message):
+    user_id = message.from_user.id
+    if user_id not in ADMINS:
+        await message.reply("ʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ᴀɴʏ ᴘᴇʀᴍɪꜱꜱɪᴏɴ ᴛᴏ ᴜꜱᴇ ᴛʜɪꜱ ᴄᴏᴍᴍᴀɴᴅ.")
+        return
+
+    count = await db.all_premium_users()
+    await message.reply(f"👥 ᴛᴏᴛᴀʟ ᴘʀᴇᴍɪᴜᴍ ᴜꜱᴇʀꜱ - {count}\n\n<i>ᴘʟᴇᴀꜱᴇ ᴡᴀɪᴛ, ꜰᴇᴛᴄʜɪɴɢ ꜰᴜʟʟ ɪɴꜰᴏ ᴏꜰ ᴘʀᴇᴍɪᴜᴍ ᴜꜱᴇʀꜱ</i>")
+
+    users = await db.get_all_users()
+    new = "📝 <u>ᴘʀᴇᴍɪᴜᴍ ᴜꜱᴇʀꜱ ɪɴꜰᴏʀᴍᴀᴛɪᴏɴ</u> :\n\n"
+    user_count = 1
+    async for user in users:
+        data = await db.get_user(user['id'])
+        if data and data.get("expiry_time"):
+            expiry = data.get("expiry_time")
+            expiry_ist = expiry.astimezone(pytz.timezone("Asia/Kolkata"))
+            current_time = datetime.datetime.now(pytz.timezone("Asia/Kolkata"))
+            
+            if current_time > expiry_ist:
+                await db.remove_premium_access(user['id'])  # Remove premium access if expired
+                continue  # Skip the user if their expiry time has passed
+                
+            expiry_str_in_ist = expiry_ist.strftime("%d-%m-%Y")
+            expiry_time_in_ist = expiry_ist.strftime("%I:%M:%S %p")
+            time_left = expiry_ist - current_time
+            
+            days = time_left.days
+            hours, remainder = divmod(time_left.seconds, 3600)
+            minutes, seconds = divmod(remainder, 60)
+            time_left_str = f"{days} ᴅᴀʏꜱ, {hours} ʜᴏᴜʀꜱ, {minutes} ᴍɪɴᴜᴛᴇꜱ, {seconds} ꜱᴇᴄᴏɴᴅꜱ"
+            
+            new += f"{user_count}. {(await client.get_users(user['id'])).mention}\n👤 ᴜꜱᴇʀ ɪᴅ : <code>{user['id']}</code>\n⏱️ ᴇxᴘɪʀᴇᴅ ᴅᴀᴛᴇ : {expiry_str_in_ist}\n⏱️ ᴇxᴘɪʀᴇᴅ ᴛɪᴍᴇ : {expiry_time_in_ist}\n⏳ ʀᴇᴍᴀɪɴɪɴɢ ᴛɪᴍᴇ : {time_left_str}\n\n"
+            user_count += 1
+        else:
+            pass
+    
+    try:
+        await message.reply(new)
+    except MessageTooLong:
+        with open('premium_users_info.txt', 'w+') as outfile:
+            outfile.write(new)
+        await message.reply_document('premium_users_info.txt', caption="Premium Users Information:")
         
     
