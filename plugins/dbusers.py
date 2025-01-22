@@ -87,5 +87,11 @@ class Database:
     async def delete_user(self, user_id):
         await self.col.delete_many({'id': int(user_id)})
 
+    async def all_premium_users(self):
+        count = await self.users.count_documents({
+        "expiry_time": {"$gt": datetime.datetime.now()}
+        })
+        return count
+
 
 db = Database(DATABASE_URI, DATABASE_NAME)
