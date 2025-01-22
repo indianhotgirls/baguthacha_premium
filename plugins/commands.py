@@ -616,6 +616,7 @@ async def premium_users_info(client, message):
     await message.reply(f"👥 ᴛᴏᴛᴀʟ ᴘʀᴇᴍɪᴜᴍ ᴜꜱᴇʀꜱ - {count}\n\n<i>ᴘʟᴇᴀꜱᴇ ᴡᴀɪᴛ, ꜰᴇᴛᴄʜɪɴɢ ꜰᴜʟʟ ɪɴꜰᴏ ᴏꜰ ᴘʀᴇᴍɪᴜᴍ ᴜꜱᴇʀꜱ</i>")
 
     users = await db.get_all_users()
+    user = await client.get_users(user_id)
     new = "📝 <u>ᴘʀᴇᴍɪᴜᴍ ᴜꜱᴇʀꜱ ɪɴꜰᴏʀᴍᴀᴛɪᴏɴ</u> :\n\n"
     user_count = 1
     async for user in users:
