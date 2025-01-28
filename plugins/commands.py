@@ -6,6 +6,7 @@ import os
 import logging
 import random
 import asyncio
+import pytz
 from validators import domain
 from Script import script
 from plugins.dbusers import db
@@ -14,6 +15,7 @@ from plugins.users_api import get_user, update_user_info
 from plugins.database import get_file_details
 from plugins.stringdb import get_original_string
 from pyrogram.errors import ChatAdminRequired, FloodWait
+from pyrogram.errors.exceptions.bad_request_400 import MessageTooLong
 from pyrogram.types import *
 from utils import verify_user, check_token, check_verification, get_token, get_seconds
 from config import *
