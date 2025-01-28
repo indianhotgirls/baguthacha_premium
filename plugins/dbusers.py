@@ -57,7 +57,7 @@ class Database:
         return self.col.find({})
 
     async def get_all_premium_users(self):
-        return self.users.find({})
+        return self.users.find()
 
     async def get_user(self, user_id):
         user_data = await self.users.find_one({"id": user_id})
