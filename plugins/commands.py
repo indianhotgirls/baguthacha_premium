@@ -630,9 +630,9 @@ async def premium_users_info(client, message):
             expiry_ist = expiry.astimezone(pytz.timezone("Asia/Kolkata"))
             current_time = datetime.datetime.now(pytz.timezone("Asia/Kolkata"))
             
-            #if current_time > expiry_ist:
-                #await db.remove_premium_access(user['id'])  # Remove premium access if expired
-                #continue  # Skip the user if their expiry time has passed
+            if current_time > expiry_ist:
+                await db.remove_premium_access(user['id'])  # Remove premium access if expired
+                continue  # Skip the user if their expiry time has passed
                 
             expiry_str_in_ist = expiry_ist.strftime("%d-%m-%Y")
             expiry_time_in_ist = expiry_ist.strftime("%I:%M:%S %p")
